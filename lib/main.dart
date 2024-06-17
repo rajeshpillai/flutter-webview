@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(
@@ -23,18 +24,29 @@ class _WebViewAppState extends State<WebViewApp> {
   @override
   void initState() {
     super.initState();
+    _requestPermissions();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.transparent)
       ..loadRequest(
-        Uri.parse('https://teachyourselfcoding.com/'),
+        Uri.parse('https://teachyourself.com'),
       );
+      
   }
 
+  Future<void> _requestPermissions() async {
+    await [
+      Permission.camera,
+      Permission.location,
+    ].request();
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TYC.COM'),
+        title: const Text('TYC'),
       ),
       body: WebViewWidget(
         controller: controller,
